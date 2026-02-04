@@ -28,7 +28,7 @@ pub struct Unstake<'info> {
     #[account(
         mut,
         constraint = collection.owner == &CORE_PROGRAM_ID,
-        constraint = !asset.data_is_empty()
+        constraint = !collection.data_is_empty()
     )]
     pub collection: UncheckedAccount<'info>,
 
@@ -55,6 +55,7 @@ pub struct Unstake<'info> {
     pub user_account: Account<'info, UserAccount>,
 
     /// CHECK: Verified by address constraint
+    #[account(address = CORE_PROGRAM_ID)]
     pub core_program: UncheckedAccount<'info>,
 
     pub system_program: Program<'info, System>,
@@ -70,7 +71,7 @@ impl<'info> Unstake<'info> {
             StakeError::FreezePeriodNotPassed
         );
 
-        let points_earned = time_elapsed + self.config.points_per_stake as u32;
+        let points_earned = time_elapsed * self.config.points_per_stake as u32; //was adding vefore
 
         self.user_account.points += points_earned;
 

@@ -27,8 +27,8 @@ pub struct Stake<'info> {
     /// CHECK: Verified by owner against CORE_PROGRAM_ID
     #[account(
         mut,
-        constraint= asset.owner == &CORE_PROGRAM_ID,
-        constraint = !asset.data_is_empty(),
+        constraint = collection.owner == &CORE_PROGRAM_ID, //fix , first i copied and paste the struct from the asses only
+        constraint = !collection.data_is_empty(),
         
     )]
     pub collection  : UncheckedAccount<'info>,
